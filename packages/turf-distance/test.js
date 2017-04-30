@@ -28,18 +28,19 @@ test('distance', t => {
         const radians = distance(pt1, pt2, 'radians');
         const degrees = distance(pt1, pt2, 'degrees');
 
+        const result = {
+            "miles": miles,
+            "nauticalmiles": nauticalmiles,
+            "kilometers": kilometers,
+            "radians": radians,
+            "degrees": degrees
+        };
+
         if (process.env.REGEN) {
-            write.sync(directories.out + name + '-miles.json', miles);
-            write.sync(directories.out + name + '-nauticalmiles.json', nauticalmiles);
-            write.sync(directories.out + name + '-kilometers.json', kilometers);
-            write.sync(directories.out + name + '-radians.json', radians);
-            write.sync(directories.out + name + '-degrees.json', degrees);
+            write.sync(directories.out + name + '.json', result);
         }
-        t.deepEqual(miles, load.sync(directories.out + name + '-miles.json'), name + '-miles');
-        t.deepEqual(nauticalmiles, load.sync(directories.out + name + '-nauticalmiles.json'), name + '-nauticalmiles');
-        t.deepEqual(kilometers, load.sync(directories.out + name + '-kilometers.json'), name + '-kilometers');
-        t.deepEqual(radians, load.sync(directories.out + name + '-radians.json'), name + '-radians');
-        t.deepEqual(degrees, load.sync(directories.out + name + '-degrees.json'), name + '-degrees');
+        t.deepEqual(result, load.sync(directories.out + name + '.json'), name + ' distance');
+
         t.throws(() => {
             distance(pt1, pt2, 'blah');
         }, 'unknown option given to units');
